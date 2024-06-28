@@ -1,0 +1,114 @@
+[build-system]
+requires = ["flit_core >=3.2,<4.0.0"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "haven-conf"
+authors = [{ name = "Jon Morton", email = "jon@jamorton.com" }]
+description = "Simple and flexible dataclass configuration system"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.10.1"
+dynamic = ["version"]
+
+[project.scripts]
+flit = "flit:main"
+
+[project.optional-dependencies]
+dev = ["flit >=3.2.0,<4.0.0", "ruff"]
+doc = ["sphinx >=5.1.1,<8.0.0", "sphinx_rtd_theme"]
+test = [
+    "bandit[toml]",
+    "check-manifest",
+    "pre-commit",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-runner",
+    "pytest",
+    "pytest-github-actions-annotate-failures",
+    "shellcheck-py",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+indent-width = 4
+
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = 80
+
+[project.urls]
+Documentation = "https://github.com/jonmorton/haven-conf/tree/main#readme"
+Source = "https://github.com/jonmorton/haven-conf"
+Issues = "https://github.com/jonmorton/haven-conf/issues"
+
+[tool.flit.module]
+name = "haven"
+
+[tool.flit.sdist]
+exclude = [
+    ".github/",
+    ".pytest_cache/",
+    "env/",
+    ".env/",
+    ".pypirc",
+    ".gitattributes",
+    ".devcontainer/",
+    "docs/generated/",
+    "docs/_build/",
+    "tests/",
+    ".flake8",
+    ".gitignore",
+    ".pre-commit-config.yaml",
+    "CHANGELOG.md",
+    "Makefile",
+    ".lcov.info",
+    ".coverage",
+]
+
+
+[tool.bandit]
+exclude_dirs = ["build", "dist", "tests", "scripts"]
+number = 4
+recursive = true
+targets = "src"
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+fail_under = 100
+
+[tool.pyright]
+include = ["src"]
+exclude = ["**/node_modules", "**/__pycache__"]
+
+reportMissingImports = true
+reportMissingTypeStubs = false
+reportRedeclaration = false
+
+pythonVersion = "3.10"
+
+executionEnvironments = [{ root = "src" }]
+
+[tool.pytest.ini_options]
+addopts = "--cov-report lcov:lcov.info --cov src --cov-fail-under 0 --cov-append -m 'not integration'"
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = [
+    "integration: marks as integration test",
+    "notebooks: marks as notebook test",
+    "gpu: marks as gpu test",
+    "slow: marks tests as slow",
+    "unit: fast offline tests",
+]

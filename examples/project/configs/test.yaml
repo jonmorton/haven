@@ -1,0 +1,6 @@
+task_name: train
+task:
+  num_workers: 7
+model:
+  name: GPT
+  seq_len: 12
