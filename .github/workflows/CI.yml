@@ -15,7 +15,7 @@ jobs:
       matrix:
         tools: ["ruff", "bandit", "pytest"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - uses: Azure/login@v1.5.1
         continue-on-error: true
         with:
