@@ -165,6 +165,8 @@ def choice(
         kwargs["default_factory"] = import_object(default_factory)
     elif default_factory is not None:
         kwargs["default_factory"] = default_factory
+    else:
+        kwargs["default_factory"] = lambda: None
 
     return field(metadata=metadata, **kwargs)
 
