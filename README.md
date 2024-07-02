@@ -2,7 +2,7 @@
 
 <p align="center">
     <a href="https://badge.fury.io/py/haven-conf"><img src="https://badge.fury.io/py/haven-conf.svg" alt="PyPI version" height="18"></a>
-    <a href="https://github.com/jonmorton/haven/actions/workflows/pytest.yml"><img src="https://github.com/jonmorton/haven/workflows/pytest.yml/badge.svg" alt="PyTest" height="18"></a>
+    <a href="https://github.com/jonmorton/haven/actions/workflows/pytest.yml"><img src="https://github.com/jonmorton/haven/actions/workflows/pytest.yml/badge.svg" alt="PyTest" height="18"></a>
     <a href="#contributors-"><img src="https://img.shields.io/badge/all_contributors-2-orange.svg" alt="All Contributors" height="18"></a>
     <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" height="18"></a>
 </p>
