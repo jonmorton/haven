@@ -3,7 +3,6 @@
 <p align="center">
     <a href="https://badge.fury.io/py/haven-conf"><img src="https://badge.fury.io/py/haven-conf.svg" alt="PyPI version" height="18"></a>
     <a href="https://github.com/jonmorton/haven/actions/workflows/pytest.yml"><img src="https://github.com/jonmorton/haven/actions/workflows/pytest.yml/badge.svg" alt="PyTest" height="18"></a>
-    <a href="#contributors-"><img src="https://img.shields.io/badge/all_contributors-2-orange.svg" alt="All Contributors" height="18"></a>
     <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" height="18"></a>
 </p>
 
@@ -160,5 +159,8 @@ See the examples directory in the source code for more complete examples.
 
 ## API
 
-See here.
+Full documentation [here](https://jonmorton.github.io/haven/).
 
+## Acknowledgements
+
+This project is inspired by and borrows code from [Pyrallis](https://github.com/eladrich/pyrallis), [SimpleParsing](https://github.com/lebrice/SimpleParsing), and [draccus](https://github.com/dlwh/draccus), and [Hydra](https://hydra.cc/)
