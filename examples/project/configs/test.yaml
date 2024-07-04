@@ -1,5 +1,5 @@
-task_name: train
 task:
+  name: train
   num_workers: 7
 model:
   name: GPT

@@ -18,21 +18,7 @@ class ModelConfig:
 
 
 @dataclass
-class GPTConfig(ModelConfig):
-    embed_dim: int = 512
-    seq_len: int = 512
-    head_dim: int = 64
-
-
-@dataclass
-class MambaConfig(ModelConfig):
-    hdim: int = 512
-    nblock: int = 10
-
-
-@dataclass
 class Config:
-    task_name: str
     task: haven.Component[TaskConfig, None] = haven.plugin(
         discover_packages_path="mylib.tasks",
         attr="run",

@@ -1,6 +1,6 @@
 import abc
 import inspect
-from typing import Callable, Generic, ParamSpec, TypeVar, get_origin
+from typing import Callable, Generic, ParamSpec, TypeVar, get_args, get_origin
 
 from haven.type_inspector import is_dataclass_type
 from haven.types import Dataclass
@@ -59,6 +59,13 @@ def get_component_dataclass(obj) -> type[Dataclass]:
         return argdc
     else:
         raise ValueError()
+
+
+def get_component_type_dataclass(obj) -> type[Dataclass]:
+    type_args = get_args(obj)
+    if len(type_args) != 2:
+        raise ParsingError("Component type should have two type args")
+    return type_args[0]
 
 
 def build_component(

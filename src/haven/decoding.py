@@ -13,7 +13,12 @@ from typing import (
 )
 
 from haven.choice import ChoiceMeta
-from haven.component import build_component, get_component_dataclass, is_component_type
+from haven.component import (
+    build_component,
+    get_component_dataclass,
+    get_component_type_dataclass,
+    is_component_type,
+)
 from haven.type_inspector import (
     get_bound,
     get_type_arguments,
@@ -199,6 +204,8 @@ def decode_choice_field(
     if meta.key_field not in targ_dict:
         # Key field name not found in the dict, find the default value from the field definition
         targ_cls = outer_cls if meta.outer else field.type
+        if is_component_type(targ_cls):
+            targ_cls = get_component_type_dataclass(targ_cls)
         if not is_dataclass(targ_cls):
             raise ParsingError("The choice field type is not a dataclass.")
         for f in fields(targ_cls):
