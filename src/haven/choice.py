@@ -194,7 +194,7 @@ def plugin(
         key_field (str, optional): The field use to determine the choice. Defaults to "name".
             Same function as in :meth:`choice`
         outer (bool, optional): Same as in :meth:`choice`. Defaults to False.
-        default_factory (Callable[..., TDataclass] | str | None, optional): Defaults to None.
+        default_factory (Callable[[], T] | str | None, optional): Defaults to None.
     """
     return choice(
         Plugin(discover_packages_path, attr),

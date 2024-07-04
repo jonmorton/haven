@@ -37,14 +37,30 @@ def dump_pytree(obj: Dataclass) -> Pytree:
 
 
 def update(dc: TDataclass, overrides: Pytree) -> TDataclass:
-    """_summary_
+    """Update a dataclass given overrides as a Pytree.
+
+    Returns a copy and does not modify the original dataclass.
+
+    Example:
+
+      .. code-block:: python
+
+        @dataclass
+        Config:
+            val: a = 5
+            val2: b = 6
+
+        cfg = haven.load_pytree(Config, {"a": 10})
+        cfg = haven.update(cfg, {"b": 10})
+
+        assert cfg.a == 10 and cf.b == 10
 
     Args:
-        dc (TDataclass): _description_
-        overrides (Pytree): _description_
+        dc (TDataclass): Dataclass instance to update
+        overrides (Pytree): Overrides as a pytree
 
     Returns:
-        TDataclass: _description_
+        TDataclass: A new dataclass with overrides applied
     """
     pytree = encode(dc)
     pytree_merge(pytree, overrides)
