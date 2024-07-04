@@ -1,4 +1,4 @@
-from lib.config import GPTConfig, MambaConfig, Model
+from mylib.config import GPTConfig, MambaConfig, Model
 
 
 class GPT(Model):

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from lib.config import Config, TaskConfig
+from mylib.config import Config, TaskConfig
 
 
 @dataclass

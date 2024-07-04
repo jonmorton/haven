@@ -5,8 +5,7 @@ import haven
 
 @dataclass
 class TaskConfig:
-    def run(self):
-        pass
+    name: str
 
 
 class Model:
@@ -16,9 +15,6 @@ class Model:
 @dataclass
 class ModelConfig:
     name: str
-
-    def build(self):
-        pass
 
 
 @dataclass
@@ -38,12 +34,10 @@ class MambaConfig(ModelConfig):
 class Config:
     task_name: str
     task: haven.Component[TaskConfig, None] = haven.plugin(
-        discover_packages_path="lib.tasks",
+        discover_packages_path="mylib.tasks",
         attr="run",
-        key_field="task_name",
-        outer=True,
     )
     model: haven.Component[ModelConfig, Model] = haven.choice(
-        ["lib.models.GPT", "lib.models.Mamba"], "name"
+        ["mylib.models.GPT", "mylib.models.Mamba"],
     )
     out_dir: str = "./output"

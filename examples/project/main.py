@@ -2,7 +2,7 @@ import argparse
 import sys
 
 import haven
-from lib.config import Config
+from mylib.config import Config
 
 
 def parse_args(argv):
