@@ -125,26 +125,26 @@ def choice(
     outer: bool = False,
     default_factory: Callable[[], T] | str | None = None,
 ) -> T:
-    """Dynamically selects dataclasses to decode based on the value of another string field.
+    """A field which dynamically selects the dataclass to decode based on the value of another string field.
 
-    Choice types construct a name, dataclass mapping. During config parsing, the value of another
+    Choice fields construct a name, dataclass mapping. During config parsing, the value of another
     field in the child or parent dataclass is used to lookup which dataclass to decode.
 
-    The `choices` argument can be either a list or dict; if it is a list, then the name for each choice
-    is determined automatically by inspecting the name of the class or function. The list/dict values
-    can either contain the choices directly or strings of the form `my_package.my_module.MyClass`.
+    The `choices` argument can be either a list, dict, or instance of ChoiceProvider; if it is a list,
+    then the name for each choice is determined automatically by inspecting the name of the class or function.
+    The list/dict value can either contain the choices directly or strings of the form `my_package.my_module.MyClass`.
 
     Note:
         The `default_factory` argument works as expected in standard dataclass construction, but when constructed
         via this library the value of the key field will always override it, since it controls which choice to use.
 
     Args:
-        choices (list[str  |  type[Dataclass]] | dict[str, str  |  type[Dataclass]] ): a list or dict of possible choices.
+        choices (list[ChoiceType] | dict[str, ChoiceType] | ChoiceProvider): determines the possible choices
         key_field (str, optional): the name of the field which determines the choice at runtime. Defaults to "name".
         outer (bool, optional): If true, the choice field is a sibling in the parent dataclass. If false, it is a
             member of this field's dataclass. Defaults to False.
-        default_factory (Callable[..., TDataclass] | str, optional): If str, import the object specified and use that class as the
-            default factory. Otherwise, a callable that returns a dataclass instance or None for no default.
+        default_factory (Callable[..., T] | str, optional): If str, import the object specified and use that class
+            as the default factory. Otherwise, a callable that returns a dataclass instance or None for no default.
 
     Raises:
         ValueError: raised if import strings don't follow the correct format.
@@ -182,11 +182,7 @@ def plugin(
 
     Similar to the :meth:`choices` function, but it doesn't require explicitly
     specifying all available choices upfront. Instead, all submodules of the given
-    package are discovered at decoding time as available choices. The module
-    attribute specified by `attr` is used as the factory choice. In most cases it
-    should simply be a dataclass.
-
-    The choice name is the same as the module name.
+    package are discovered at decoding time as available choices.
 
     Args:
         discover_packages_path (str): the namespace in which to discover packages
