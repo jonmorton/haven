@@ -8,7 +8,7 @@
 
 ## A modular dataclass configuration system
 
-`Haven` is system for configuring applications using dataclasses and YAML. It strives to be relatively simple while still scaling to complex use cases.
+`Haven` is system for configuring applications using dataclasses and YAML. It provides full type safety while being modular enough to scale to large projects.
 
 ## Key Features
 
@@ -16,8 +16,7 @@
  * Doesn't take over your CLI or impose certain structure on your program.
  * Support for parsing a wide variety of types and type hints, including optionals and unions.
  * Scales to projects with many config variations or sub-components using `choice` and `plugin` fields.
- * Easily link each config variation to the matching variation of your code using `Component`.
-
+ * Easily couple code variations with config choices in a type-safe way using `Component`.
 
 ## Tour
 
