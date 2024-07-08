@@ -15,12 +15,9 @@ def parse_args(argv):
 def main(arg_list):
     args = parse_args(arg_list)
 
-    # Load yaml config file
+    # Load yaml config file and cli overrides
     with open(args.cfg, "r") as f:
-        cfg = haven.load(Config, f)
-
-    # CLI override
-    cfg = haven.update_from_dotlist(cfg, args.overrides)
+        cfg = haven.load(Config, f, dotlist_overrides=args.overrides)
 
     # Print yaml
     print(haven.dump(cfg))
