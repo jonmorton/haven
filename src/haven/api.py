@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any, TypeVar
+from typing import Any, Optional, TypeVar
 
 from haven import formats
 from haven.decoding import decode, type_decoders
@@ -123,7 +123,13 @@ def add_decoder(
     return func
 
 
-def load(cls: type[TDataclass], stream: ReadStream, format: str = "yaml") -> TDataclass:
+def load(
+    cls: type[TDataclass],
+    stream: ReadStream,
+    format: str = "yaml",
+    overrides: Optional[Pytree] = None,
+    dotlist_overrides: Optional[list[str]] = None,
+) -> TDataclass:
     """Parse a text-based markup format and load it into an instance of the given dataclass
 
     Supported formats:
@@ -134,6 +140,10 @@ def load(cls: type[TDataclass], stream: ReadStream, format: str = "yaml") -> TDa
         cls (type[TDataclass]): A dataclass to instantiate
         stream (ReadStream): A string or file-like object to read
         format (str, optional): The format to expect. Defaults to "yaml".
+        overrides (Pytree, optional): A pytree of values to override the values from the stream.
+        dotlist_overrides(list[str], optional): A list of overrides in "dotlist format", e.g.
+            `["model.num_layers=5", "optim.lr=1e-3", "something.sizes=[1,2,3]"]`. Useful in
+            combination with argparse.REMAINDER to provide CLI config setting.
 
     Raises:
         ValueError: If an unknown format is specified.
@@ -147,6 +157,13 @@ def load(cls: type[TDataclass], stream: ReadStream, format: str = "yaml") -> TDa
         pytree = formats.encode_json(stream)
     else:
         raise ValueError(f"Invalid format '{format}'. Expected one of yaml, json.")
+
+    if overrides is not None:
+        pytree_merge(pytree, overrides)
+
+    if dotlist_overrides is not None:
+        dotlist_pytree = formats.encode_dotlist(dotlist_overrides)
+        pytree_merge(pytree, dotlist_pytree)
 
     return decode(cls, pytree)
 

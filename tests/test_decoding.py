@@ -29,21 +29,34 @@ def test_encode_something(simple_attribute):
 
 
 @parametrize("config_type", ["yaml", "json"])
-def test_dump_load(simple_attribute, config_type):
+@parametrize("overrides", [None, {}, {"another_val": 10}])
+@parametrize("dotlist_overrides", [None, [], ["another_val=10"]])
+def test_dump_load(simple_attribute, config_type, overrides, dotlist_overrides):
     some_type, _, expected_value = simple_attribute
 
     @dataclass
     class SomeClass:
         val: some_type | None = None
+        another_val: int = 5
 
-    b = SomeClass(val=expected_value)
+    b = SomeClass(
+        val=expected_value, another_val=5 if (not overrides and not dotlist_overrides) else 10
+    )
 
     data = haven.dump(b, config_type)
 
-    new_b = haven.load(SomeClass, data, format=config_type)
+    new_b = haven.load(
+        SomeClass,
+        data,
+        format=config_type,
+        overrides=overrides,
+        dotlist_overrides=dotlist_overrides,
+    )
     assert new_b == b
 
-    new_b = haven.load(SomeClass, "", format=config_type)
+    new_b = haven.load(
+        SomeClass, "", format=config_type, overrides=overrides, dotlist_overrides=dotlist_overrides
+    )
     assert new_b != b
 
 
