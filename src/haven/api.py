@@ -151,7 +151,9 @@ def load(
     Returns:
         TDataclass: An instance of the given dataclass with values taken from the text document.
     """
-    if stream is not None:
+    if stream is not None and not (
+        isinstance(stream, (str, bytes, bytearray, memoryview)) and len(stream) == 0
+    ):
         if format == "yaml":
             pytree = formats.encode_yaml(stream)
         elif format == "json":

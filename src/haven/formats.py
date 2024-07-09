@@ -8,9 +8,6 @@ def encode_yaml(stream: ReadStream) -> Any:
     """
     Read yaml from a string or file-like object and encode it into a pytree.
     """
-    if isinstance(stream, (str, bytes, bytearray)) and not stream:
-        return {}
-
     import yaml
 
     return yaml.safe_load(stream)
@@ -23,8 +20,6 @@ def encode_json(stream: ReadStream) -> Any:
     import json
 
     if isinstance(stream, (str, bytes, bytearray, memoryview)):
-        if not stream:
-            return {}
         return json.loads(stream)
 
     return json.load(stream)
