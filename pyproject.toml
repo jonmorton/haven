@@ -48,9 +48,9 @@ docstring-code-format = true
 docstring-code-line-length = 80
 
 [project.urls]
-Documentation = "https://github.com/jonmorton/haven-conf/tree/main#readme"
-Source = "https://github.com/jonmorton/haven-conf"
-Issues = "https://github.com/jonmorton/haven-conf/issues"
+Documentation = "https://github.com/jonmorton/haven/tree/main#readme"
+Source = "https://github.com/jonmorton/haven"
+Issues = "https://github.com/jonmorton/haven/issues"
 
 [tool.flit.module]
 name = "haven"
