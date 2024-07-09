@@ -125,7 +125,7 @@ def add_decoder(
 
 def load(
     cls: type[TDataclass],
-    stream: ReadStream,
+    stream: Optional[ReadStream] = None,
     format: str = "yaml",
     overrides: Optional[Pytree] = None,
     dotlist_overrides: Optional[list[str]] = None,
@@ -151,12 +151,15 @@ def load(
     Returns:
         TDataclass: An instance of the given dataclass with values taken from the text document.
     """
-    if format == "yaml":
-        pytree = formats.encode_yaml(stream)
-    elif format == "json":
-        pytree = formats.encode_json(stream)
+    if stream is not None:
+        if format == "yaml":
+            pytree = formats.encode_yaml(stream)
+        elif format == "json":
+            pytree = formats.encode_json(stream)
+        else:
+            raise ValueError(f"Invalid format '{format}'. Expected one of yaml, json.")
     else:
-        raise ValueError(f"Invalid format '{format}'. Expected one of yaml, json.")
+        pytree = {}
 
     if overrides is not None:
         pytree_merge(pytree, overrides)
