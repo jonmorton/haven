@@ -17,12 +17,12 @@ def test_encode_something(simple_attribute):
     @dataclass
     class SomeClass:
         d: dict[str, some_type] = field(default_factory=dict)  # type: ignore
-        l: list[tuple[some_type, some_type]] = field(default_factory=list)  # type: ignore
+        s: list[tuple[some_type, some_type]] = field(default_factory=list)  # type: ignore
         t: dict[str, some_type | None] = field(default_factory=dict)  # type: ignore
 
     b = SomeClass()
     b.d.update({"hey": expected_value})
-    b.l.append((expected_value, expected_value))
+    b.s.append((expected_value, expected_value))
     b.t.update({"hey": None, "hey2": expected_value})
 
     assert haven.load_pytree(SomeClass, haven.dump_pytree(b)) == b
@@ -66,12 +66,12 @@ def test_dump_load_dicts(simple_attribute):
     @dataclass
     class SomeClass:
         d: dict[str, some_type] = field(default_factory=dict)
-        l: list[tuple[some_type, some_type]] = field(default_factory=list)
+        s: list[tuple[some_type, some_type]] = field(default_factory=list)
         t: dict[str, some_type | None] = field(default_factory=dict)
 
     b = SomeClass()
     b.d.update({"hey": expected_value})
-    b.l.append((expected_value, expected_value))
+    b.s.append((expected_value, expected_value))
     b.t.update({"hey": None, "hey2": expected_value})
 
     data = haven.dump(b)
