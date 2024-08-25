@@ -79,10 +79,8 @@ class Plugin(ChoiceProvider):
             module = importlib.import_module(f"{self.discover_packages_path}.{mod_info.name}")
             if hasattr(module, self.attr):
                 val = getattr(module, self.attr)
-                print(val)
                 if isinstance(val, (list, dict, ChoiceProvider)):
                     for k, v in parse_choices(val).get_choices().items():
-                        print(k, v)
                         if k in choices:
                             raise ParsingError(
                                 f"Duplicate choices registered for '{k}' in plugin provider."
