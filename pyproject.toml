@@ -24,7 +24,7 @@ flit = "flit:main"
 
 [project.optional-dependencies]
 dev = ["flit >=3.2.0,<4.0.0", "ruff"]
-doc = ["sphinx >=5.1.1,<8.0.0", "sphinx-rtd-theme"]
+doc = ["sphinx >=5.1.1,<9.0.0", "sphinx-rtd-theme"]
 test = [
     "bandit[toml]",
     "check-manifest",
