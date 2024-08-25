@@ -36,7 +36,7 @@ def test_dump_load(simple_attribute, config_type, overrides, dotlist_overrides):
 
     @dataclass
     class SomeClass:
-        val: some_type | None = None
+        val: some_type | None = None  # type: ignore
         another_val: int = 5
 
     b = SomeClass(
@@ -65,9 +65,9 @@ def test_dump_load_dicts(simple_attribute):
 
     @dataclass
     class SomeClass:
-        d: dict[str, some_type] = field(default_factory=dict)
-        s: list[tuple[some_type, some_type]] = field(default_factory=list)
-        t: dict[str, some_type | None] = field(default_factory=dict)
+        d: dict[str, some_type] = field(default_factory=dict)  # type: ignore
+        s: list[tuple[some_type, some_type]] = field(default_factory=list)  # type: ignore
+        t: dict[str, some_type | None] = field(default_factory=dict)  # type: ignore
 
     b = SomeClass()
     b.d.update({"hey": expected_value})
