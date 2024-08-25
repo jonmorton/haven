@@ -137,7 +137,7 @@ def decode_dataclass(cls: type[Dataclass], d: dict[str, Any]) -> Dataclass:
 
         if "_haven_choices" in field.metadata:
             raw_value = obj_dict.pop(name, {})
-            field_value = decode_choice_field(field, raw_value, cls, d)
+            field_value = decode_choice_field(field, raw_value)
         elif name not in obj_dict:
             if field.default is MISSING and field.default_factory is MISSING:
                 logger.warning(
@@ -188,9 +188,7 @@ def decode_field(field: Field, raw_value: Any) -> Any:
     return decode(field_type, raw_value)
 
 
-def decode_choice_field(
-    field: Field, raw_value: Any, outer_cls: type[Dataclass], outer_dict: dict[str, Any]
-) -> Any:
+def decode_choice_field(field: Field, raw_value: Any) -> Any:
     meta: ChoiceMeta = field.metadata["_haven_choices"]
 
     if not isinstance(raw_value, dict):
@@ -198,12 +196,12 @@ def decode_choice_field(
             f"Choice field '{field.name}' only works for dataclasses, expected dict when decoding"
         )
 
-    targ_dict = outer_dict if meta.outer else raw_value
+    targ_dict = raw_value
     choice_name = None
 
     if meta.key_field not in targ_dict:
         # Key field name not found in the dict, find the default value from the field definition
-        targ_cls = outer_cls if meta.outer else field.type
+        targ_cls = field.type
         if is_component_type(targ_cls):
             targ_cls = get_component_type_dataclass(targ_cls)
         if not is_dataclass(targ_cls):

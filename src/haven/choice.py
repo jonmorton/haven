@@ -114,13 +114,11 @@ def iterable_provider(choices: Iterable[ChoiceType]) -> ChoiceProvider:
 class ChoiceMeta:
     choices: ChoiceProvider
     key_field: str = "name"
-    outer: bool = False
 
 
 def choice(
     choices: list[ChoiceType] | dict[str, ChoiceType] | ChoiceProvider,
     key_field: str = "name",
-    outer: bool = False,
     default_factory: Callable[[], T] | str | None = None,
 ) -> T:
     """A field which dynamically selects the dataclass to decode based on the value of another string field.
@@ -139,8 +137,6 @@ def choice(
     Args:
         choices (list[ChoiceType] | dict[str, ChoiceType] | ChoiceProvider): determines the possible choices
         key_field (str, optional): the name of the field which determines the choice at runtime. Defaults to "name".
-        outer (bool, optional): If true, the choice field is a sibling in the parent dataclass. If false, it is a
-            member of this field's dataclass. Defaults to False.
         default_factory (Callable[..., T] | str, optional): If str, import the object specified and use that class
             as the default factory. Otherwise, a callable that returns a dataclass instance or None for no default.
 
@@ -154,7 +150,6 @@ def choice(
         "_haven_choices": ChoiceMeta(
             choices=provider,
             key_field=key_field,
-            outer=outer,
         ),
     }
 
@@ -173,7 +168,6 @@ def plugin(
     discover_packages_path: str,
     attr: str,
     key_field: str = "name",
-    outer: bool = False,
     default_factory: Callable[[], T] | str | None = None,
 ):
     """Discover choices as all modules in a package namespace automatically.
@@ -187,12 +181,10 @@ def plugin(
         attr (str): the attribute expected in each module to use as the choice value
         key_field (str, optional): The field use to determine the choice. Defaults to "name".
             Same function as in :meth:`choice`
-        outer (bool, optional): Same as in :meth:`choice`. Defaults to False.
         default_factory (Callable[[], T] | str | None, optional): Defaults to None.
     """
     return choice(
         Plugin(discover_packages_path, attr),
         key_field,
-        outer=outer,
         default_factory=default_factory,
     )
