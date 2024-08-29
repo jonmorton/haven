@@ -30,4 +30,4 @@ __all__ = [
     "set_include_base_dir",
 ]
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"

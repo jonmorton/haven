@@ -18,7 +18,7 @@ classifiers = [
 ]
 requires-python = ">=3.10.1"
 dynamic = ["version"]
-dependencies = ["fsspec"]
+dependencies = ["fsspec", "pyyaml"]
 
 [project.scripts]
 flit = "flit:main"
