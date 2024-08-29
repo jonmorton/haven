@@ -1,16 +1,20 @@
 from typing import Any
 
+import yaml
+
+from haven.includer import include_constructor
 from haven.types import Pytree, ReadStream
 from haven.utils import deflatten
+
+yaml.add_constructor("!include", include_constructor)
 
 
 def encode_yaml(stream: ReadStream) -> Any:
     """
     Read yaml from a string or file-like object and encode it into a pytree.
     """
-    import yaml
 
-    return yaml.safe_load(stream)
+    return yaml.full_load(stream)
 
 
 def encode_json(stream: ReadStream) -> Any:
@@ -29,8 +33,6 @@ def decode_yaml(obj: Any) -> str:
     """
     Convert a pytree into yaml string.
     """
-    import yaml
-
     return yaml.dump(obj)
 
 

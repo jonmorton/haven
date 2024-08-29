@@ -152,6 +152,31 @@ assert isinstance(model, Llama2)
 
 The config dataclass to use for each variation is automatically derived from the type hint on the first argument of the callable.
 
+### YAML Includes
+
+Haven supports including other yaml files using the `!include` directive.
+
+A.yaml:
+
+```yaml
+person: !include A.yaml
+```
+
+B.yaml:
+
+```yaml
+name: "test"
+```
+
+Result:
+
+```yaml
+person:
+  name: "test"
+```
+
+To set the base directory used for searching for relative paths, you can use `haven.set_include_base_dir`.
+
 ### More examples
 
 See the examples directory in the source code for more complete examples.

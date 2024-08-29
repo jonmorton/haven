@@ -1,5 +1,6 @@
 from collections.abc import Callable
-from typing import Any, Optional, TypeVar
+from os import PathLike
+from typing import Any, Optional, TypeVar, Union
 
 from haven import formats
 from haven.decoding import decode, type_decoders
@@ -195,3 +196,9 @@ def dump(obj: Dataclass, format: str = "yaml") -> str:
         return formats.decode_json(pytree)
     else:
         raise ValueError("Invalid format '{format}'. Expeceted one of yaml, json.")
+
+
+def set_include_base_dir(path: Union[str, PathLike, Callable[[], Union[str, PathLike]], None]):
+    from haven.includer import include_constructor
+
+    include_constructor.base_dir = path

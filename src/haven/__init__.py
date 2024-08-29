@@ -5,6 +5,7 @@ from .api import (
     dump_pytree,
     load,
     load_pytree,
+    set_include_base_dir,
     update,
     update_from_dotlist,
 )
@@ -26,6 +27,7 @@ __all__ = [
     "plugin",
     "Component",
     "ComponentBuilder",
+    "set_include_base_dir",
 ]
 
 __version__ = "0.1.0"
