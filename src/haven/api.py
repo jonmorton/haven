@@ -1,3 +1,4 @@
+import argparse
 from collections.abc import Callable
 from os import PathLike
 from typing import Any, Optional, TypeVar, Union
@@ -202,3 +203,65 @@ def set_include_base_dir(path: Union[str, PathLike, Callable[[], Union[str, Path
     from haven.includer import include_constructor
 
     include_constructor.base_dir = path
+
+
+def init(
+    cls: type[TDataclass],
+    config_path: Optional[Union[str, PathLike]] = None,
+    config_str: Optional[str] = None,
+    overrides: Optional[Pytree] = None,
+    dotlist_overrides: Optional[list[str]] = None,
+    argv: Optional[list[str]] = None,
+) -> TDataclass:
+    """Initialize a dataclass instance from a variety of sources.
+
+    Config values from different sources are merged in the order in the parameter list below, except for `argv` which is
+    always processed first.
+
+    Parameters:
+        cls (type[TDataclass]): Dataclass to instantiate.
+        config_path (Optional[Union[str, PathLike]], optional): Path to a config file. Defaults to None.
+        config_str (Optional[str], optional): A string containing a config. Defaults to None.
+        overrides (Optional[Pytree], optional): A pytree of values to override the values from the config file. Defaults to None.
+        dotlist_overrides (Optional[list[str]], optional): A list of overrides in "dotlist format", e.g.
+            `["model.num_layers=5", "optim.lr=1e-3", "something.sizes=[1,2,3]"]`. Useful in
+            combination with argparse.REMAINDER to provide CLI config setting. Defaults to None.
+        argv (Optional[list[str]], optional): Command-line arguments to parse. Supports the following options:
+        - --config <path> : Load a config file
+        - <overrides> : Override config values in dotlist format, e.g. `model.num_layers=5 optim.lr=1e-3`
+
+    Returns:
+        TDataclass: An instance of the given dataclass with values taken from the config sources.
+    """
+
+    pytrees = []
+
+    if argv is not None:
+        argparser = argparse.ArgumentParser()
+        argparser.add_argument("--config", type=str, default=None)
+        argparser.add_argument("overrides", nargs=argparse.REMAINDER)
+
+        args = argparser.parse_args(argv)
+        if args.config:
+            pytrees.append(formats.encode_yaml(args.config))
+
+        if args.overrides:
+            pytrees.append(formats.encode_dotlist(args.overrides))
+
+    if config_path is not None:
+        with open(config_path, "r") as f:
+            pytrees.append(formats.encode_yaml(f.read()))
+
+    if config_str is not None:
+        pytrees.append(formats.encode_yaml(config_str))
+
+    if overrides is not None:
+        pytrees.append(overrides)
+
+    if dotlist_overrides is not None:
+        pytrees.append(formats.encode_dotlist(dotlist_overrides))
+
+    pytree = {}
+    for p in pytrees:
+        pytree_merge(pytree, p)
+    return load_pytree(cls, pytree)
